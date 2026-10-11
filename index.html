@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matematika Kelas 4 - Spesialis Pecahan & PTS Interaktif</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .fraction-bar {
+            transition: width 0.4s ease-in-out;
+        }
+        .svg-container svg {
+            max-height: 220px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="bg-amber-400 text-indigo-900 p-2 rounded-xl font-black text-xl shadow">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-lg leading-tight">Matematika Kelas 4</h1>
+                        <p class="text-xs text-indigo-200">Kurikulum Merdeka - Sesi Les Privat</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-1.5 text-xs font-semibold">
+                    <button onclick="switchTab('home')" id="nav-home" class="px-3 py-2 rounded-lg transition bg-indigo-700 text-white hover:bg-indigo-500">
+                        <i class="fa-solid fa-house mr-1"></i> Beranda
+                    </button>
+                    <button onclick="switchTab('bab1')" id="nav-bab1" class="px-3 py-2 rounded-lg transition hover:bg-indigo-500/50 text-indigo-100">
+                        <i class="fa-solid fa-arrow-down-1-9 mr-1"></i> Bab 1: Bilangan & Faktor
+                    </button>
+                    <button onclick="switchTab('bab2')" id="nav-bab2" class="px-3 py-2 rounded-lg transition hover:bg-indigo-500/50 text-indigo-100">
+                        <i class="fa-solid fa-pie-chart mr-1"></i> Bab 2: Modul Pecahan
+                    </button>
+                    <button onclick="switchTab('pecahanSpecial')" id="nav-pecahanSpecial" class="px-3 py-2 rounded-lg transition bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 shadow">
+                        <i class="fa-solid fa-pizza-slice mr-1"></i> Khusus Pecahan (2 Paket) 🔥
+                    </button>
+                    <button onclick="switchTab('pts')" id="nav-pts" class="px-3 py-2 rounded-lg transition bg-amber-400 text-indigo-950 font-bold hover:bg-amber-300 shadow">
+                        <i class="fa-solid fa-pen-to-square mr-1"></i> Simulasi PTS
+                    </button>
+                </nav>
+
+                <!-- Audio Toggle & Mobile Menu Btn -->
+                <div class="flex items-center space-x-2">
+                    <button id="soundToggle" onclick="toggleSound()" class="p-2 rounded-lg bg-indigo-500 hover:bg-indigo-400 text-amber-300 transition" title="Suara Efek">
+                        <i class="fa-solid fa-volume-high text-lg"></i>
+                    </button>
+                    <button onclick="toggleMobileNav()" class="md:hidden p-2 rounded-lg bg-indigo-700 hover:bg-indigo-500 text-white">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-indigo-800 px-4 pt-2 pb-4 space-y-2 border-t border-indigo-700 text-sm">
+            <button onclick="switchTab('home')" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-indigo-700 block">
+                <i class="fa-solid fa-house mr-2"></i> Beranda
+            </button>
+            <button onclick="switchTab('bab1')" class="w-full text-left px-3 py-2 rounded-md font-medium text-indigo-100 hover:bg-indigo-700 block">
+                <i class="fa-solid fa-arrow-down-1-9 mr-2"></i> Bab 1: Bilangan Cacah & Pemfaktoran
+            </button>
+            <button onclick="switchTab('bab2')" class="w-full text-left px-3 py-2 rounded-md font-medium text-indigo-100 hover:bg-indigo-700 block">
+                <i class="fa-solid fa-pie-chart mr-2"></i> Bab 2: Modul Pecahan
+            </button>
+            <button onclick="switchTab('pecahanSpecial')" class="w-full text-left px-3 py-2 rounded-md font-bold bg-emerald-400 text-indigo-950 block">
+                <i class="fa-solid fa-pizza-slice mr-2"></i> Khusus Pecahan Visual (2 Paket x 20 Soal) 🔥
+            </button>
+            <button onclick="switchTab('pts')" class="w-full text-left px-3 py-2 rounded-md font-bold bg-amber-400 text-indigo-950 block">
+                <i class="fa-solid fa-pen-to-square mr-2"></i> Simulasi PTS (40 Soal)
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <section id="tab-home" class="space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white p-8 sm:p-10 shadow-xl">
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="inline-block px-3 py-1 bg-amber-400 text-indigo-950 text-xs font-extrabold rounded-full uppercase tracking-wider">Sesi Les Privat Interaktif</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Kuasai Matematika & Pecahan Kelas 4 SD! 🍕🚀</h2>
+                    <p class="text-indigo-100 text-base sm:text-lg leading-relaxed">
+                        Pendampingan belajar privat lengkap! Pelajari materi dasar, manfaatkan **Kuis Spesialis Pecahan Visual (40 Soal Gambar)**, serta uji kesiapan lewat **2 Paket Simulasi PTS**.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="switchTab('pecahanSpecial')" class="px-6 py-3 bg-emerald-400 text-slate-950 font-extrabold rounded-xl shadow-lg hover:bg-emerald-300 hover:scale-105 transition transform flex items-center">
+                            <i class="fa-solid fa-pizza-slice mr-2 text-lg"></i> Kuis Khusus Pecahan Visual (40 Soal)
+                        </button>
+                        <button onclick="switchTab('pts')" class="px-6 py-3 bg-amber-400 text-indigo-950 font-bold rounded-xl shadow-lg hover:bg-amber-300 hover:scale-105 transition transform flex items-center">
+                            <i class="fa-solid fa-rocket mr-2"></i> Simulasi PTS (40 Soal)
+                        </button>
+                    </div>
+                </div>
+                <!-- Background visual shapes -->
+                <div class="absolute -right-10 -bottom-10 opacity-20 text-white text-[200px] pointer-events-none font-black">
+                    <i class="fa-solid fa-pie-chart"></i>
+                </div>
+            </div>
+
+            <!-- Dashboard Modules Selection -->
+            <div>
+                <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                    <i class="fa-solid fa-layer-group text-indigo-600 mr-2"></i> Pilih Modul & Latihan Interaktif
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                    <!-- Card Bab 1 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-100 hover:shadow-xl transition flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl font-bold group-hover:scale-110 transition">
+                                <i class="fa-solid fa-arrow-down-1-9"></i>
+                            </div>
+                            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Bab 1</span>
+                            <h4 class="text-lg font-bold text-slate-800">Bilangan & Pemfaktoran</h4>
+                            <p class="text-slate-600 text-xs leading-relaxed">
+                                Nilai tempat s.d 10.000, dekomposisi, serta **Mesin Pemfaktoran Interaktif**.
+                            </p>
+                        </div>
+                        <div class="pt-6">
+                            <button onclick="switchTab('bab1')" class="w-full py-2.5 px-3 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 text-xs font-bold rounded-xl transition flex items-center justify-center">
+                                Pelajari Bab 1 <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card Bab 2 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-100 hover:shadow-xl transition flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl font-bold group-hover:scale-110 transition">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+                            <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Bab 2</span>
+                            <h4 class="text-lg font-bold text-slate-800">Modul Belajar Pecahan</h4>
+                            <p class="text-slate-600 text-xs leading-relaxed">
+                                Rangkuman konsep pecahan senilai, pecahan desimal, & persen (%) lengkap visualisator.
+                            </p>
+                        </div>
+                        <div class="pt-6">
+                            <button onclick="switchTab('bab2')" class="w-full py-2.5 px-3 bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-bold rounded-xl transition flex items-center justify-center">
+                                Baca Modul <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card Khusus Pecahan (Visual) -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md border-2 border-emerald-400 hover:shadow-xl transition flex flex-col justify-between group relative overflow-hidden">
+                        <div class="absolute top-3 right-3 bg-emerald-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+                            Spesialis 🔥
+                        </div>
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl font-bold group-hover:scale-110 transition">
+                                <i class="fa-solid fa-pizza-slice"></i>
+                            </div>
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Khusus Pecahan</span>
+                            <h4 class="text-lg font-bold text-slate-800">2 Paket Kuis Pecahan Gambar</h4>
+                            <p class="text-slate-600 text-xs leading-relaxed">
+                                **40 Soal Gambar Interaktif** (Pizza, Batang Arsir, Pie Diagram, Grid, Garis Bilangan).
+                            </p>
+                        </div>
+                        <div class="pt-6">
+                            <button onclick="switchTab('pecahanSpecial')" class="w-full py-2.5 px-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs rounded-xl transition flex items-center justify-center shadow">
+                                Buka Kuis Pecahan <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card Simulasi PTS -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-100 hover:shadow-xl transition flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl font-bold group-hover:scale-110 transition">
+                                <i class="fa-solid fa-file-pen"></i>
+                            </div>
+                            <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">Simulasi PTS</span>
+                            <h4 class="text-lg font-bold text-slate-800">2 Paket Simulasi Ujian</h4>
+                            <p class="text-slate-600 text-xs leading-relaxed">
+                                **40 Soal Lengkap** Bab 1 & Bab 2 dengan Mode Belajar & Ujian.
+                            </p>
+                        </div>
+                        <div class="pt-6">
+                            <button onclick="switchTab('pts')" class="w-full py-2.5 px-3 bg-amber-400 hover:bg-amber-500 text-slate-900 text-xs font-bold rounded-xl transition flex items-center justify-center shadow">
+                                Mulai Simulasi PTS <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-bab1" class="hidden space-y-8">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex items-center space-x-3 mb-2">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-700 font-bold text-xs rounded-full">BAB I</span>
+                    <h2 class="text-2xl font-bold text-slate-800">Bilangan Cacah Sampai 10.000 & Pemfaktoran</h2>
+                </div>
+                <p class="text-slate-600 text-sm">
+                    Mempelajari membaca & menulis bilangan cacah, nilai tempat (ribuan, ratusan, puluhan, satuan), serta konsep penting **Faktor dan Kelipatan**.
+                </p>
+            </div>
+
+            <!-- Sub-materi 1 & 2 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h3 class="text-lg font-bold text-slate-800 flex items-center">
+                        <i class="fa-solid fa-list-ol text-blue-600 mr-2"></i> 1. Nilai Tempat & Dekomposisi
+                    </h3>
+                    <div class="text-sm text-slate-600 leading-relaxed space-y-2">
+                        <p>Setiap angka dalam bilangan memiliki **nilai tempat** tergantung posisinya:</p>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono grid grid-cols-4 text-center font-bold">
+                            <div class="text-purple-600">Ribuan</div>
+                            <div class="text-blue-600">Ratusan</div>
+                            <div class="text-emerald-600">Puluhan</div>
+                            <div class="text-amber-600">Satuan</div>
+                        </div>
+                    </div>
+                    <!-- Interactive Place Value Explorer -->
+                    <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 space-y-3">
+                        <label class="block text-xs font-bold text-blue-900">Uji Coba Dekomposisi Bilangan:</label>
+                        <div class="flex space-x-2">
+                            <input type="number" id="decomInput" value="7425" max="9999" min="1000" class="w-full px-3 py-2 border rounded-xl font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button onclick="calculateDecomposition()" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition">
+                                Urai
+                            </button>
+                        </div>
+                        <div id="decomResult" class="text-sm font-semibold text-slate-800 pt-2"></div>
+                    </div>
+                </div>
+
+                <!-- Sub-materi 2: Interactive Factor Machine -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center">
+                            <i class="fa-solid fa-calculator text-indigo-600 mr-2"></i> 2. Mesin Pemfaktoran Interaktif
+                        </h3>
+                        <span class="text-xs bg-amber-100 text-amber-800 font-bold px-2.5 py-1 rounded-full">Topik Sulit 🔥</span>
+                    </div>
+                    <p class="text-sm text-slate-600">
+                        **Faktor** adalah bilangan-bilangan yang dapat membagi habis suatu bilangan tanpa sisa.
+                    </p>
+                    
+                    <div class="bg-indigo-50/60 p-4 rounded-xl border border-indigo-100 space-y-3">
+                        <label class="block text-xs font-bold text-indigo-900">Masukkan Angka untuk Mencari Faktor (misal: 12, 18, 24):</label>
+                        <div class="flex space-x-2">
+                            <input type="number" id="factorInput" value="12" min="1" max="100" class="w-full px-3 py-2 border rounded-xl font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <button onclick="generateFactors()" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition">
+                                Cari Faktor
+                            </button>
+                        </div>
+                        <div id="factorResult" class="space-y-2 pt-2 text-sm"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-bab2" class="hidden space-y-8">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex items-center space-x-3 mb-2">
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-full">BAB II (LENGKAP)</span>
+                    <h2 class="text-2xl font-bold text-slate-800">Modul Belajar Pecahan, Desimal & Persen</h2>
+                </div>
+                <p class="text-slate-600 text-sm">
+                    Gunakan visualisator di bawah ini untuk membantu siswa memahami pecahan senilai sebelum mengerjakan kuis khusus.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center">
+                    <i class="fa-solid fa-shapes text-emerald-600 mr-2"></i> Visualisator Perbandingan Pecahan
+                </h3>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <span class="font-bold text-xs text-slate-700">Pecahan Pertama (A):</span>
+                            <div class="flex space-x-2 items-center">
+                                <input type="number" id="numA" value="1" min="1" max="12" onchange="updateFractionVisual()" class="w-16 p-2 border rounded-lg text-center font-bold">
+                                <span class="text-xl font-bold">/</span>
+                                <input type="number" id="denA" value="2" min="1" max="12" onchange="updateFractionVisual()" class="w-16 p-2 border rounded-lg text-center font-bold">
+                            </div>
+                            <div class="h-8 w-full bg-slate-200 rounded-lg overflow-hidden flex" id="barA"></div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <span class="font-bold text-xs text-slate-700">Pecahan Kedua (B):</span>
+                            <div class="flex space-x-2 items-center">
+                                <input type="number" id="numB" value="2" min="1" max="12" onchange="updateFractionVisual()" class="w-16 p-2 border rounded-lg text-center font-bold">
+                                <span class="text-xl font-bold">/</span>
+                                <input type="number" id="denB" value="4" min="1" max="12" onchange="updateFractionVisual()" class="w-16 p-2 border rounded-lg text-center font-bold">
+                            </div>
+                            <div class="h-8 w-full bg-slate-200 rounded-lg overflow-hidden flex" id="barB"></div>
+                        </div>
+                    </div>
+
+                    <div id="fractionCompareResult" class="p-3 bg-white rounded-xl border border-emerald-200 text-center font-bold text-sm text-emerald-800"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-pecahanSpecial" class="hidden space-y-8">
+            <!-- Header Pecahan Special -->
+            <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 p-6 rounded-3xl shadow-lg text-white flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="flex items-center space-x-2">
+                        <span class="px-3 py-1 bg-amber-400 text-slate-950 font-black text-xs rounded-full uppercase tracking-wider">KUIS SPESIALIS PECAHAN</span>
+                        <span class="text-xs bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full font-bold">40 Soal Gambar</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black">Latihan Khusus Pecahan Visual 🍕📊</h2>
+                    <p class="text-emerald-100 text-xs sm:text-sm">
+                        Latihan lengkap khusus materi pecahan dilengkapi gambar SVG interaktif (Pizza, Diagram Pita, Pie, Grid Kotak & Garis Bilangan).
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Package Switcher -->
+                    <div class="flex items-center bg-black/20 backdrop-blur-md p-1.5 rounded-2xl border border-white/20">
+                        <button id="btnPecahanPkg1" onclick="switchPecahanPackage(1)" class="px-3 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-900 shadow">
+                            <i class="fa-solid fa-box-archive mr-1"></i> Paket Pecahan 1 (20 Soal)
+                        </button>
+                        <button id="btnPecahanPkg2" onclick="switchPecahanPackage(2)" class="px-3 py-2 rounded-xl text-xs font-bold transition text-emerald-100 hover:text-white">
+                            <i class="fa-solid fa-box-archive mr-1"></i> Paket Pecahan 2 (20 Soal)
+                        </button>
+                    </div>
+
+                    <!-- Mode Switcher -->
+                    <div class="flex items-center bg-black/20 backdrop-blur-md p-1.5 rounded-2xl border border-white/20">
+                        <button id="btnPecahanModeStudy" onclick="setPecahanMode('study')" class="px-3 py-2 rounded-xl text-xs font-bold transition bg-amber-400 text-slate-950 shadow">
+                            <i class="fa-solid fa-lightbulb mr-1"></i> Mode Belajar
+                        </button>
+                        <button id="btnPecahanModeExam" onclick="setPecahanMode('exam')" class="px-3 py-2 rounded-xl text-xs font-bold transition text-emerald-100 hover:text-white">
+                            <i class="fa-solid fa-stopwatch mr-1"></i> Mode Ujian
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Layout Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+                <!-- Sidebar Progress -->
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center justify-between">
+                            <span id="pecahanPackageTitleDisplay">Paket Pecahan 1</span>
+                            <span id="pecahanProgressText" class="text-xs bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-extrabold">0 / 20</span>
+                        </h4>
+
+                        <!-- Grid Navigator -->
+                        <div id="pecahanNavGrid" class="grid grid-cols-5 gap-1.5"></div>
+
+                        <div class="pt-2 border-t border-slate-100 space-y-2">
+                            <button onclick="submitPecahanExam()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition text-sm flex items-center justify-center shadow">
+                                <i class="fa-solid fa-check-circle mr-2"></i> Selesaikan Kuis Pecahan
+                            </button>
+                            <button onclick="resetPecahanExam()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold rounded-xl transition text-xs flex items-center justify-center">
+                                <i class="fa-solid fa-rotate-left mr-1.5"></i> Reset Paket Ini
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Question Area -->
+                <div class="lg:col-span-3 space-y-6">
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                        
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                            <span id="pecahanHeader" class="text-xs font-extrabold text-emerald-600 uppercase tracking-wider">Paket Pecahan 1 - Soal Nomor 1</span>
+                            <span id="pecahanTag" class="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-md border border-emerald-200">Pecahan Senilai</span>
+                        </div>
+
+                        <!-- Visual SVG Display Container -->
+                        <div id="pecahanSvgContainer" class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-center svg-container flex flex-col items-center justify-center min-h-[160px]">
+                            <!-- Generated SVG inserted here -->
+                        </div>
+
+                        <!-- Question Text -->
+                        <div id="pecahanQuestionText" class="text-base sm:text-lg font-bold text-slate-800 leading-relaxed"></div>
+
+                        <!-- Options List -->
+                        <div id="pecahanOptionsContainer" class="space-y-3"></div>
+
+                        <!-- Explanation Box (Study Mode) -->
+                        <div id="pecahanExplanationBox" class="hidden p-5 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
+                            <h5 class="font-bold text-amber-900 text-sm flex items-center">
+                                <i class="fa-solid fa-lightbulb text-amber-500 mr-2 text-lg"></i> Pembahasan Langkah demi Langkah:
+                            </h5>
+                            <p id="pecahanExplanationText" class="text-sm text-amber-950 leading-relaxed"></p>
+                        </div>
+
+                        <!-- Prev / Next Navigation -->
+                        <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                            <button id="btnPecahanPrev" onclick="navigatePecahanQuestion(-1)" class="px-4 py-2 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition text-sm">
+                                <i class="fa-solid fa-chevron-left mr-1"></i> Sebelumnya
+                            </button>
+                            <button id="btnPecahanNext" onclick="navigatePecahanQuestion(1)" class="px-4 py-2 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition text-sm">
+                                Selanjutnya <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="tab-pts" class="hidden space-y-8">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2 mb-1">
+                        <span class="px-3 py-1 bg-amber-400 text-indigo-950 font-extrabold text-xs rounded-full">SIMULASI EXAM</span>
+                        <h2 class="text-2xl font-bold text-slate-800">Simulasi PTS Matematika Kelas 4</h2>
+                    </div>
+                    <p class="text-slate-600 text-sm">
+                        Uji gabungan Bab 1 (Bilangan & Pemfaktoran) dan Bab 2 (Pecahan).
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex items-center bg-indigo-50 p-1.5 rounded-xl border border-indigo-200">
+                        <button id="btnPkg1" onclick="switchPtsPackage(1)" class="px-3 py-2 rounded-lg text-xs font-bold transition bg-indigo-600 text-white shadow">
+                            <i class="fa-solid fa-box mr-1"></i> Paket 1 (20 Soal)
+                        </button>
+                        <button id="btnPkg2" onclick="switchPtsPackage(2)" class="px-3 py-2 rounded-lg text-xs font-bold transition text-indigo-700 hover:text-indigo-900">
+                            <i class="fa-solid fa-box mr-1"></i> Paket 2 (20 Soal)
+                        </button>
+                    </div>
+
+                    <div class="flex items-center bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+                        <button id="btnModeStudy" onclick="setPtsMode('study')" class="px-3 py-2 rounded-lg text-xs font-bold transition bg-white text-indigo-600 shadow">
+                            <i class="fa-solid fa-book-open mr-1"></i> Mode Belajar
+                        </button>
+                        <button id="btnModeExam" onclick="setPtsMode('exam')" class="px-3 py-2 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900">
+                            <i class="fa-solid fa-stopwatch mr-1"></i> Mode Ujian
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center justify-between">
+                            <span id="packageTitleDisplay">Paket Quiz 1</span>
+                            <span id="ptsProgressText" class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">0 / 20</span>
+                        </h4>
+                        <div id="ptsQuestionNavGrid" class="grid grid-cols-5 gap-1.5"></div>
+                        <div class="pt-2 border-t border-slate-100 space-y-2">
+                            <button onclick="submitPTSExam()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition text-sm flex items-center justify-center shadow">
+                                <i class="fa-solid fa-check-circle mr-2"></i> Selesaikan Exam
+                            </button>
+                            <button onclick="resetPtsExam()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold rounded-xl transition text-xs flex items-center justify-center">
+                                <i class="fa-solid fa-rotate-left mr-1.5"></i> Reset Paket Ini
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 space-y-6">
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                            <span id="ptsQuestionHeader" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Soal Nomor 1</span>
+                            <span id="ptsQuestionTag" class="px-2.5 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded-md">Bab 1: Bilangan Cacah</span>
+                        </div>
+                        <div id="ptsQuestionText" class="text-base sm:text-lg font-bold text-slate-800 leading-relaxed"></div>
+                        <div id="ptsOptionsContainer" class="space-y-3"></div>
+                        <div id="ptsExplanationBox" class="hidden p-5 rounded-xl bg-amber-50 border border-amber-200 space-y-2">
+                            <h5 class="font-bold text-amber-900 text-sm flex items-center">
+                                <i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i> Pembahasan Langkah demi Langkah:
+                            </h5>
+                            <p id="ptsExplanationText" class="text-sm text-amber-950 leading-relaxed"></p>
+                        </div>
+                        <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                            <button id="btnPtsPrev" onclick="navigatePtsQuestion(-1)" class="px-4 py-2 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition text-sm">
+                                <i class="fa-solid fa-chevron-left mr-1"></i> Sebelumnya
+                            </button>
+                            <button id="btnPtsNext" onclick="navigatePtsQuestion(1)" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition text-sm">
+                                Selanjutnya <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="resultModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl text-center space-y-6 border border-slate-100">
+            <div class="w-20 h-20 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-4xl mx-auto shadow-inner">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div>
+                <h3 class="text-2xl font-black text-slate-800" id="modalTitle">Hasil Latihan</h3>
+                <p class="text-sm text-slate-500 mt-1" id="modalPackageSubtext">Paket Quiz - Les Privat Matematika</p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block">Nilai Kamu</span>
+                <span id="finalScore" class="text-5xl font-black text-indigo-600">0</span>
+                <span class="text-xs font-semibold text-slate-500 block mt-1" id="scoreSubtext">0 dari 20 Soal Terjawab Benar</span>
+            </div>
+            <div id="feedbackMsg" class="text-sm font-semibold text-slate-700"></div>
+            <div class="flex space-x-3">
+                <button onclick="closeResultModal()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition text-sm">
+                    Tutup
+                </button>
+                <button id="btnModalRepeat" onclick="repeatCurrentPackage()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition text-sm shadow">
+                    Ulangi Paket Ini
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let soundEnabled = true;
+        let currentTab = 'home';
+
+        // State for PTS Quiz
+        let currentPackage = 1;
+        let ptsMode = 'study';
+        let currentPtsIndex = 0;
+        let userAnswersPkg1 = {}; 
+        let userAnswersPkg2 = {}; 
+
+        // State for Special Fractions Quiz
+        let currentPecahanPackage = 1;
+        let pecahanMode = 'study';
+        let currentPecahanIndex = 0;
+        let userAnswersPecahanPkg1 = {};
+        let userAnswersPecahanPkg2 = {};
+
+        const pecahanQuestionsPkg1 = [
+            {
+                topic: "Pecahan Bagian",
+                question: "Perhatikan gambar pizza di atas! Pizza dipotong menjadi 8 bagian sama besar. Jika Ani mengambil <b>3 potong</b>, pecahan yang menyatakan bagian pizza Ani adalah...",
+                options: ["A. 3/8", "B. 5/8", "C. 3/5", "D. 8/3"],
+                answer: 0,
+                svg: { type: 'pizza', total: 8, taken: 3 },
+                explanation: "Pembilang = 3 (potongan yang diambil), Penyebut = 8 (total seluruh potongan pizza). Jadi pecahannya adalah 3/8."
+            },
+            {
+                topic: "Pecahan pada Diagram Pita",
+                question: "Perhatikan diagram pita 5 kotak di atas! Berapakah nilai pecahan untuk daerah yang **diarsir warna hijau**?",
+                options: ["A. 1/5", "B. 2/5", "C. 3/5", "D. 2/3"],
+                answer: 1,
+                svg: { type: 'bar', total: 5, shaded: 2, color: '#10b981' },
+                explanation: "Ada 2 kotak yang diarsir hijau dari total 5 kotak yang sama besar. Pecahannya adalah 2/5."
+            },
+            {
+                topic: "Membandingkan Pecahan Visual",
+                question: "Bandingkan dua diagram lingkaran di atas! Tanda perbandingan yang tepat untuk <b>1/2 ... 1/4</b> adalah...",
+                options: ["A. < (kurang dari)", "B. > (lebih dari)", "C. = (sama dengan)", "D. +"],
+                answer: 1,
+                svg: { type: 'comparePie', numA: 1, denA: 2, numB: 1, denB: 4 },
+                explanation: "Luas daerah diarsir 1/2 tampak lebih besar dari 1/4. Jadi, 1/2 > 1/4."
+            },
+            {
+                topic: "Pecahan Desimal",
+                question: "Perhatikan kotak persepuluhan di atas! Ada 4 kotak diarsir dari 10 kotak. Bentuk **desimal** dari pecahan tersebut adalah...",
+                options: ["A. 0,04", "B. 0,4", "C. 4,0", "D. 0,44"],
+                answer: 1,
+                svg: { type: 'grid10', shaded: 4 },
+                explanation: "4 dari 10 kotak = 4/10. Pecahan persepuluhan ditulis dengan 1 angka di belakang koma, yaitu 0,4."
+            },
+            {
+                topic: "Menyederhanakan Pecahan",
+                question: "Perhatikan batang cokelat 12 petak di atas! Cokelat diarsir sebanyak 4 petak (4/12). Bentuk pecahan paling sederhana dari <b>4/12</b> adalah...",
+                options: ["A. 1/3", "B. 2/3", "C. 1/4", "D. 2/6"],
+                answer: 0,
+                svg: { type: 'chocolate', total: 12, shaded: 4 },
+                explanation: "Bagi pembilang dan penyebut dengan FPB-nya yaitu 4: (4 ÷ 4) / (12 ÷ 4) = 1/3."
+            },
+            {
+                topic: "Garis Bilangan Pecahan",
+                question: "Perhatikan garis bilangan di atas! Nilai pecahan yang tepat untuk menggantikan huruf **X** adalah...",
+                options: ["A. 1/4", "B. 2/4 (atau 1/2)", "C. 3/4", "D. 4/4"],
+                answer: 2,
+                svg: { type: 'numberline', total: 4, markIndex: 3, label: 'X' },
+                explanation: "Garis bilangan dibagi menjadi 4 bagian sama panjang. Posisi ke-3 mewakili pecahan 3/4."
+            },
+            {
+                topic: "Pecahan Senilai Visual",
+                question: "Pecahan <b>2/5</b> dikalikan 2 pada pembilang dan penyebutnya. Diagram manakah yang SENILAI dengan 2/5?",
+                options: ["A. 4/10", "B. 3/10", "C. 2/10", "D. 5/10"],
+                answer: 0,
+                svg: { type: 'bar', total: 10, shaded: 4, color: '#0284c7' },
+                explanation: "(2 × 2) / (5 × 2) = 4/10. Luas daerah arsirannya persis sama dengan 2/5."
+            },
+            {
+                topic: "Konsep Persen (%)",
+                question: "Perhatikan lingkaran yang dibagi 10 bagian sama besar di atas! 7 bagian diarsir (7/10). Bentuk **persen (%)** dari bagian tersebut adalah...",
+                options: ["A. 7%", "B. 17%", "C. 70%", "D. 77%"],
+                answer: 2,
+                svg: { type: 'pie', total: 10, taken: 7 },
+                explanation: "7/10 = (7 × 10) / (10 × 10) = 70/100 = 70%."
+            },
+            {
+                topic: "Desimal ke Pecahan Biasa",
+                question: "Bentuk pecahan biasa paling sederhana dari desimal <b>0,6</b> adalah...",
+                options: ["A. 6/10", "B. 3/5", "C. 1/6", "D. 3/10"],
+                answer: 1,
+                svg: { type: 'grid10', shaded: 6 },
+                explanation: "0,6 = 6/10. Jika dibagi 2 pada pembilang dan penyebut: (6 ÷ 2) / (10 ÷ 2) = 3/5."
+            },
+            {
+                topic: "Soal Cerita Kue Tart",
+                question: "Ibu memotong kue tart menjadi 6 bagian. 2 bagian dimakan Ayah. Berapa bagian kue tart yang **tersisa**?",
+                options: ["A. 2/6", "B. 3/6", "C. 4/6 (atau 2/3)", "D. 5/6"],
+                answer: 2,
+                svg: { type: 'pie', total: 6, taken: 4, color: '#f59e0b' },
+                explanation: "Sisa kue = 6 - 2 = 4 bagian dari total 6 bagian. Maka sisanya adalah 4/6 (senilai dengan 2/3)."
+            },
+            {
+                topic: "Persen ke Grid 100",
+                question: "Perhatikan grid 100 kotak di atas! 25 kotak diarsir warna ungu. Bentuk persen dan pecahan sederhananya adalah...",
+                options: ["A. 25% dan 1/4", "B. 25% dan 1/2", "C. 50% dan 1/4", "D. 20% dan 1/5"],
+                answer: 0,
+                svg: { type: 'grid100', shaded: 25, color: '#8b5cf6' },
+                explanation: "25/100 = 25%. Jika disederhanakan: (25 ÷ 25) / (100 ÷ 25) = 1/4."
+            },
+            {
+                topic: "Membandingkan Penyebut Sama",
+                question: "Bandingkan dua pita di atas! Tanda perbandingan yang tepat untuk <b>3/8 ... 5/8</b> adalah...",
+                options: ["A. > (lebih dari)", "B. < (kurang dari)", "C. = (sama dengan)", "D. ÷"],
+                answer: 1,
+                svg: { type: 'compareBars', numA: 3, denA: 8, numB: 5, denB: 8 },
+                explanation: "Karena penyebutnya sama (8), kita langsung bandingkan pembilangnya: 3 < 5. Maka 3/8 < 5/8."
+            },
+            {
+                topic: "Semangka & Desimal",
+                question: "Paman memotong 1 buah semangka menjadi 4 bagian sama besar. 3 bagian dimakan bersama. Desimal dari semangka yang dimakan adalah...",
+                options: ["A. 0,25", "B. 0,50", "C. 0,75", "D. 0,80"],
+                answer: 2,
+                svg: { type: 'pie', total: 4, taken: 3, color: '#ef4444' },
+                explanation: "3/4 = (3 × 25) / (4 × 25) = 75/100 = 0,75."
+            },
+            {
+                topic: "Pecahan Senilai",
+                question: "Pernyataan pecahan senilai: <b>3/4 = ... / 12</b>. Angka yang tepat mengisi titik-titik tersebut adalah...",
+                options: ["A. 6", "B. 8", "C. 9", "D. 10"],
+                answer: 2,
+                svg: { type: 'bar', total: 12, shaded: 9, color: '#06b6d4' },
+                explanation: "Penyebut 4 dikali 3 menjadi 12. Maka pembilang 3 juga dikali 3: 3 × 3 = 9."
+            },
+            {
+                topic: "Balon Warna & Persen",
+                question: "Ada 10 balon, 3 di antaranya berwarna merah. Berapa <b>persen (%)</b> balon berwarna merah?",
+                options: ["A. 3%", "B. 30%", "C. 33%", "D. 300%"],
+                answer: 1,
+                svg: { type: 'grid10', shaded: 3, color: '#f43f5e' },
+                explanation: "3 dari 10 balon = 3/10. Dalam persen: (3 × 10) / (10 × 10) = 30/100 = 30%."
+            },
+            {
+                topic: "Mengurutkan Pecahan",
+                question: "Urutan pecahan <b>1/5, 4/5, 2/5, 3/5</b> dari yang **terkecil** adalah...",
+                options: [
+                    "A. 1/5, 2/5, 3/5, 4/5",
+                    "B. 4/5, 3/5, 2/5, 1/5",
+                    "C. 1/5, 3/5, 2/5, 4/5",
+                    "D. 2/5, 1/5, 3/5, 4/5"
+                ],
+                answer: 0,
+                svg: { type: 'numberline', total: 5, markIndex: 1, label: '1/5' },
+                explanation: "Penyebut sama (5), urutkan pembilang dari kecil ke besar: 1, 2, 3, 4."
+            },
+            {
+                topic: "Martabak Manis",
+                question: "Martabak dipotong 8 bagian. 2 bagian rasa keju. Pecahan paling sederhana martabak rasa keju adalah...",
+                options: ["A. 1/2", "B. 1/4", "C. 2/4", "D. 3/8"],
+                answer: 1,
+                svg: { type: 'pizza', total: 8, taken: 2 },
+                explanation: "2/8 disederhanakan dengan membagi 2 pada pembilang dan penyebut: (2 ÷ 2) / (8 ÷ 2) = 1/4."
+            },
+            {
+                topic: "Desimal ke Grid 100",
+                question: "Perhatikan grid 100 kotak di atas! 75 kotak diarsir (0,75). Pecahan biasa paling sederhana dari <b>0,75</b> adalah...",
+                options: ["A. 1/2", "B. 2/3", "C. 3/4", "D. 4/5"],
+                answer: 2,
+                svg: { type: 'grid100', shaded: 75, color: '#10b981' },
+                explanation: "0,75 = 75/100. Dibagi 25 pada pembilang dan penyebut: (75 ÷ 25) / (100 ÷ 25) = 3/4."
+            },
+            {
+                topic: "Membandingkan Pembilang Satu",
+                question: "Bandingkan dua pizza di atas! Tanda perbandingan yang tepat untuk <b>1/3 ... 1/6</b> adalah...",
+                options: ["A. > (lebih dari)", "B. < (kurang dari)", "C. = (sama dengan)", "D. +"],
+                answer: 0,
+                svg: { type: 'comparePie', numA: 1, denA: 3, numB: 1, denB: 6 },
+                explanation: "Potongan 1/3 lebih besar daripada potongan 1/6. Maka 1/3 > 1/6."
+            },
+            {
+                topic: "Kelereng & Persen",
+                question: "Budi punya 20 kelereng. 5 kelereng berwarna biru. Berapa **persen (%)** kelereng biru Budi?",
+                options: ["A. 20%", "B. 25%", "C. 50%", "D. 75%"],
+                answer: 1,
+                svg: { type: 'chocolate', total: 20, shaded: 5, color: '#3b82f6' },
+                explanation: "5/20 = (5 × 5) / (20 × 5) = 25/100 = 25%."
+            }
+        ];
+
+        const pecahanQuestionsPkg2 = [
+            {
+                topic: "Grid Persegi Pecahan",
+                question: "Perhatikan grid 16 kotak (4x4) di atas! 4 kotak diarsir warna biru. Bentuk pecahan paling sederhana daerah diarsir adalah...",
+                options: ["A. 1/4", "B. 1/2", "C. 3/4", "D. 4/8"],
+                answer: 0,
+                svg: { type: 'grid16', shaded: 4 },
+                explanation: "4 dari 16 kotak = 4/16. Disederhanakan dengan membagi 4: (4 ÷ 4) / (16 ÷ 4) = 1/4."
+            },
+            {
+                topic: "Membandingkan Pembilang Sama",
+                question: "Bandingkan dua diagram pita di atas! Tanda perbandingan yang tepat untuk <b>2/3 ... 2/6</b> adalah...",
+                options: ["A. < (kurang dari)", "B. > (lebih dari)", "C. = (sama dengan)", "D. -"],
+                answer: 1,
+                svg: { type: 'compareBars', numA: 2, denA: 3, numB: 2, denB: 6 },
+                explanation: "Pembilang sama (2). Penyebut lebih kecil (3) menunjukkan potongan lebih besar! Jadi 2/3 > 2/6."
+            },
+            {
+                topic: "Roti Tawar & Persen",
+                question: "Roti dipotong menjadi 10 lembar. 5 lembar telah dimakan. Bentuk **persen (%)** roti yang dimakan adalah...",
+                options: ["A. 5%", "B. 25%", "C. 50%", "D. 75%"],
+                answer: 2,
+                svg: { type: 'grid10', shaded: 5, color: '#f59e0b' },
+                explanation: "5/10 = 50/100 = 50%."
+            },
+            {
+                topic: "Garis Bilangan Pecahan",
+                question: "Perhatikan garis bilangan 5 bagian di atas! Titik A menunjukkan pecahan...",
+                options: ["A. 1/5", "B. 2/5", "C. 3/5", "D. 4/5"],
+                answer: 2,
+                svg: { type: 'numberline', total: 5, markIndex: 3, label: 'A' },
+                explanation: "Titik A berada pada langkah ke-3 dari 5 sekat. Nilainya adalah 3/5."
+            },
+            {
+                topic: "Pecahan Senilai",
+                question: "Manakah pecahan yang senilai dengan <b>4/10</b>?",
+                options: ["A. 2/5", "B. 1/5", "C. 3/5", "D. 8/10"],
+                answer: 0,
+                svg: { type: 'bar', total: 5, shaded: 2, color: '#8b5cf6' },
+                explanation: "Bagi 2 pada pembilang dan penyebut: (4 ÷ 2) / (10 ÷ 2) = 2/5."
+            },
+            {
+                topic: "Apel Matang",
+                question: "Ada 8 apel di keranjang, 6 di antaranya berwarna merah matang. Pecahan sederhana apel merah adalah...",
+                options: ["A. 1/2", "B. 3/4", "C. 2/3", "D. 5/8"],
+                answer: 1,
+                svg: { type: 'chocolate', total: 8, shaded: 6, color: '#ef4444' },
+                explanation: "6/8 disederhanakan dengan membagi 2: (6 ÷ 2) / (8 ÷ 2) = 3/4."
+            },
+            {
+                topic: "Persen Sisa (Tidak Diarsir)",
+                question: "Perhatikan lingkaran yang dibagi 4 bagian di atas! 3 bagian diarsir (3/4). Berapa persen (%) daerah yang **TIDAK diarsir**?",
+                options: ["A. 25%", "B. 50%", "C. 75%", "D. 100%"],
+                answer: 0,
+                svg: { type: 'pie', total: 4, taken: 3, color: '#10b981' },
+                explanation: "Daerah tak diarsir = 1/4 bagian = 25%."
+            },
+            {
+                topic: "Desimal Setengah (1/2)",
+                question: "Bentuk desimal dari pecahan <b>1/2</b> adalah...",
+                options: ["A. 0,2", "B. 0,5", "C. 0,12", "D. 1,2"],
+                answer: 1,
+                svg: { type: 'grid10', shaded: 5 },
+                explanation: "1/2 = (1 × 5) / (2 × 5) = 5/10 = 0,5."
+            },
+            {
+                topic: "Grid 100 & Persen",
+                question: "Perhatikan grid 100 kotak di atas! 40 kotak diarsir. Bentuk persen dan desimalnya berturut-turut adalah...",
+                options: ["A. 40% dan 0,4", "B. 4% dan 0,04", "C. 40% dan 4,0", "D. 14% dan 0,14"],
+                answer: 0,
+                svg: { type: 'grid100', shaded: 40, color: '#0284c7' },
+                explanation: "40/100 = 40% = 0,4."
+            },
+            {
+                topic: "Membandingkan Pecahan",
+                question: "Bandingkan pecahan <b>5/12 ... 7/12</b>. Tanda perbandingan yang tepat adalah...",
+                options: ["A. >", "B. <", "C. =", "D. +"],
+                answer: 1,
+                svg: { type: 'compareBars', numA: 5, denA: 12, numB: 7, denB: 12 },
+                explanation: "Penyebut sama (12). Pembilang 5 lebih kecil dari 7 (5 < 7). Maka 5/12 < 7/12."
+            },
+            {
+                topic: "Pizza Sederhana",
+                question: "Pizza dipotong 6 bagian. Dikonsumsi 2 bagian (2/6). Sederhanakan pecahan 2/6!",
+                options: ["A. 1/3", "B. 1/2", "C. 2/3", "D. 1/6"],
+                answer: 0,
+                svg: { type: 'pizza', total: 6, taken: 2 },
+                explanation: "(2 ÷ 2) / (6 ÷ 2) = 1/3."
+            },
+            {
+                topic: "Desimal 0,4 ke Biasa",
+                question: "Pecahan biasa paling sederhana dari desimal <b>0,4</b> adalah...",
+                options: ["A. 4/10", "B. 2/5", "C. 1/4", "D. 4/5"],
+                answer: 1,
+                svg: { type: 'grid10', shaded: 4 },
+                explanation: "0,4 = 4/10. Dibagi 2: (4 ÷ 2) / (10 ÷ 2) = 2/5."
+            },
+            {
+                topic: "Bintang Warna",
+                question: "Ada 5 bintang, 2 di antaranya berwarna kuning. Pecahan bintang kuning adalah...",
+                options: ["A. 2/5", "B. 3/5", "C. 1/2", "D. 2/3"],
+                answer: 0,
+                svg: { type: 'bar', total: 5, shaded: 2, color: '#eab308' },
+                explanation: "2 dari 5 bintang = 2/5."
+            },
+            {
+                topic: "Pecahan Senilai",
+                question: "Isi titik-titik berikut: <b>5/8 = ... / 24</b>.",
+                options: ["A. 10", "B. 15", "C. 20", "D. 12"],
+                answer: 1,
+                svg: { type: 'bar', total: 24, shaded: 15, color: '#10b981' },
+                explanation: "8 × 3 = 24. Maka pembilang 5 dikali 3: 5 × 3 = 15."
+            },
+            {
+                topic: "Kue Dimakan & Persen",
+                question: "Kue dipotong 10 bagian. Dimakan 8 bagian. Berapa persen (%) kue yang dimakan?",
+                options: ["A. 80%", "B. 8%", "C. 18%", "D. 88%"],
+                answer: 0,
+                svg: { type: 'pie', total: 10, taken: 8, color: '#ec4899' },
+                explanation: "8/10 = 80/100 = 80%."
+            },
+            {
+                topic: "Mengurutkan dari Terbesar",
+                question: "Urutkan pecahan <b>3/10, 8/10, 5/10</b> dari yang **TERBESAR**!",
+                options: [
+                    "A. 8/10, 5/10, 3/10",
+                    "B. 3/10, 5/10, 8/10",
+                    "C. 5/10, 8/10, 3/10",
+                    "D. 8/10, 3/10, 5/10"
+                ],
+                answer: 0,
+                svg: { type: 'numberline', total: 10, markIndex: 8, label: '8/10' },
+                explanation: "Penyebut sama (10). Pembilang terbesar ke terkecil: 8, 5, 3."
+            },
+            {
+                topic: "Akuarium & Desimal",
+                question: "Dalam akuarium ada 10 ikan, 4 di antaranya ikan koki. Desimal dari keberadaan ikan koki adalah...",
+                options: ["A. 0,4", "B. 0,04", "C. 4,0", "D. 0,14"],
+                answer: 0,
+                svg: { type: 'grid10', shaded: 4, color: '#f97316' },
+                explanation: "4/10 = 0,4."
+            },
+            {
+                topic: "Membandingkan 1/4 dan 1/2",
+                question: "Bandingkan dua pizza di atas! Pernyataan yang BENAR adalah...",
+                options: [
+                    "A. 1/4 lebih kecil dari 1/2 ( 1/4 < 1/2 )",
+                    "B. 1/4 lebih besar dari 1/2 ( 1/4 > 1/2 )",
+                    "C. 1/4 sama besar dengan 1/2",
+                    "D. 1/2 kurang dari 1/4"
+                ],
+                answer: 0,
+                svg: { type: 'comparePie', numA: 1, denA: 4, numB: 1, denB: 2 },
+                explanation: "Potongan 1/4 tampak lebih kecil dibanding setengah (1/2). Jadi 1/4 < 1/2."
+            },
+            {
+                topic: "75% ke Pecahan Sederhana",
+                question: "Bentuk pecahan biasa paling sederhana dari <b>75%</b> adalah...",
+                options: ["A. 3/4", "B. 1/4", "C. 2/3", "D. 4/5"],
+                answer: 0,
+                svg: { type: 'grid100', shaded: 75, color: '#3b82f6' },
+                explanation: "75% = 75/100. Dibagi 25 pada pembilang dan penyebut: (75 ÷ 25) / (100 ÷ 25) = 3/4."
+            },
+            {
+                topic: "Pita & Desimal",
+                question: "Siti memotong pita 1 meter menjadi 10 bagian. 3 bagian dipakai melipat bunga. Berapa desimal pita yang dipakai?",
+                options: ["A. 0,3", "B. 0,03", "C. 3,0", "D. 0,33"],
+                answer: 0,
+                svg: { type: 'bar', total: 10, shaded: 3, color: '#ec4899' },
+                explanation: "3 dari 10 bagian = 3/10 = 0,3."
+            }
+        ];
+
+        const ptsQuestionsPkg1 = [
+            { topic: "Bab 1: Nilai Tempat", question: "Nilai tempat dari angka 6 pada bilangan <b>6.245</b> adalah...", options: ["A. Satuan", "B. Puluhan", "C. Ratusan", "D. Ribuan"], answer: 3, explanation: "Angka 6 berada pada posisi paling kiri dari 4-digit bilangan. Nilai tempatnya adalah Ribuan (bernilai 6.000)." },
+            { topic: "Bab 1: Membaca Bilangan", question: "Lambang bilangan dari <b>'Tujuh ribu delapan puluh tiga'</b> adalah...", options: ["A. 7.830", "B. 7.083", "C. 7.803", "D. 7.833"], answer: 1, explanation: "Tujuh ribu (7.000) + delapan puluh (80) + tiga (3) = 7.083." },
+            { topic: "Bab 1: Dekomposisi Bilangan", question: "Dekomposisi bilangan <b>5.409</b> = 5.000 + 400 + ... + 9. Angka yang tepat adalah...", options: ["A. 0", "B. 10", "C. 40", "D. 90"], answer: 0, explanation: "5.409 terdiri dari 5 Ribuan (5.000) + 4 Ratusan (400) + 0 Puluhan (0) + 9 Satuan (9)." },
+            { topic: "Bab 1: Membandingkan Bilangan", question: "Tanda perbandingan yang tepat untuk <b>4.520 ... 4.250</b> adalah...", options: ["A. <", "B. >", "C. =", "D. +"], answer: 1, explanation: "4.520 lebih besar dari 4.250 (4.520 > 4.250)." },
+            { topic: "Bab 1: Penjumlahan Bilangan", question: "Hasil penjumlahan dari <b>3.425 + 1.250</b> adalah...", options: ["A. 4.675", "B. 4.575", "C. 4.685", "D. 4.775"], answer: 0, explanation: "3.425 + 1.250 = 4.675." },
+            { topic: "Bab 1: Faktor Bilangan", question: "Semua faktor dari bilangan <b>20</b> adalah...", options: ["A. 1, 2, 4, 5, 10, 20", "B. 1, 2, 5, 10, 20", "C. 2, 4, 5, 10", "D. 1, 2, 3, 4, 5, 20"], answer: 0, explanation: "1×20, 2×10, 4×5. Faktor dari 20 = 1, 2, 4, 5, 10, 20." },
+            { topic: "Bab 1: Faktor Bilangan", question: "Semua faktor dari bilangan <b>15</b> adalah...", options: ["A. 1, 3, 5, 15", "B. 1, 5, 15", "C. 3, 5, 15", "D. 1, 2, 3, 5, 15"], answer: 0, explanation: "1×15 dan 3×5 -> Faktornya 1, 3, 5, 15." },
+            { topic: "Bab 1: Kelipatan Bilangan", question: "Kelipatan dari bilangan <b>4</b> di antara <b>10 dan 25</b> adalah...", options: ["A. 12, 16, 20, 24", "B. 12, 16, 20", "C. 8, 12, 16, 20, 24", "D. 12, 18, 24"], answer: 0, explanation: "Kelipatan 4 di antara 10 dan 25 = 12, 16, 20, 24." },
+            { topic: "Bab 1: Faktor Persekutuan", question: "Faktor persekutuan dari <b>18 dan 24</b> adalah...", options: ["A. 1, 2, 3, 6", "B. 1, 2, 4, 6", "C. 1, 3, 9, 18", "D. 2, 3, 6, 8"], answer: 0, explanation: "Faktor 18 = {1, 2, 3, 6, 9, 18}. Faktor 24 = {1, 2, 3, 4, 6, 8, 12, 24}. Angka sama: 1, 2, 3, 6." },
+            { topic: "Bab 1: Soal Cerita Bilangan", question: "Perpustakaan memiliki <b>2.350 buku</b>. Ada sumbangan <b>1.420 buku</b> lagi. Berapa jumlah buku sekarang?", options: ["A. 3.770 buku", "B. 3.670 buku", "C. 3.870 buku", "D. 2.770 buku"], answer: 0, explanation: "2.350 + 1.420 = 3.770 buku." },
+            { topic: "Bab 2: Membandingkan Pecahan Pembilang 1", question: "Di antara <b>1/3, 1/5, 1/2, 1/8</b>, manakah yang <b>paling besar</b>?", options: ["A. 1/8", "B. 1/5", "C. 1/3", "D. 1/2"], answer: 3, explanation: "Penyebut paling kecil (2) memiliki potongan terbesar -> 1/2 paling besar." },
+            { topic: "Bab 2: Mengurutkan Pecahan Penyebut Sama", question: "Urutan <b>2/7, 5/7, 1/7, 4/7</b> dari yang <b>terkecil</b> adalah...", options: ["A. 1/7, 2/7, 4/7, 5/7", "B. 5/7, 4/7, 2/7, 1/7", "C. 1/7, 4/7, 2/7, 5/7", "D. 2/7, 1/7, 4/7, 5/7"], answer: 0, explanation: "Urutkan pembilang dari kecil ke besar: 1, 2, 4, 5." },
+            { topic: "Bab 2: Pecahan Senilai", question: "Pecahan yang senilai dengan <b>3/5</b> adalah...", options: ["A. 6/10", "B. 5/3", "C. 3/10", "D. 9/20"], answer: 0, explanation: "(3 × 2) / (5 × 2) = 6/10." },
+            { topic: "Bab 2: Pecahan Senilai", question: "Isi titik-titik: <b>2/3 = ... / 12</b>.", options: ["A. 6", "B. 8", "C. 9", "D. 10"], answer: 1, explanation: "3 × 4 = 12. Maka 2 × 4 = 8." },
+            { topic: "Bab 2: Pecahan Desimal", question: "Bentuk desimal dari <b>4/10</b> adalah...", options: ["A. 0,04", "B. 0,4", "C. 4,0", "D. 0,44"], answer: 1, explanation: "4/10 = 0,4." },
+            { topic: "Bab 2: Pecahan Desimal", question: "Bentuk desimal dari <b>35/100</b> adalah...", options: ["A. 3,5", "B. 0,35", "C. 0,035", "D. 35,0"], answer: 1, explanation: "35/100 = 0,35." },
+            { topic: "Bab 2: Konsep Persen", question: "Bentuk persen (%) dari <b>1/2</b> adalah...", options: ["A. 20%", "B. 25%", "C. 50%", "D. 75%"], answer: 2, explanation: "1/2 = 50/100 = 50%." },
+            { topic: "Bab 2: Konsep Persen", question: "Bentuk persen (%) dari <b>4/5</b> adalah...", options: ["A. 40%", "B. 70%", "C. 75%", "D. 80%"], answer: 3, explanation: "(4 × 20) / (5 × 20) = 80/100 = 80%." },
+            { topic: "Bab 2: Mengubah Pecahan", question: "Pecahan biasa paling sederhana dari desimal <b>0,25</b> adalah...", options: ["A. 1/2", "B. 1/4", "C. 2/5", "D. 3/4"], answer: 1, explanation: "0,25 = 25/100 = 1/4." },
+            { topic: "Bab 2: Cerita Pecahan", question: "Kue dipotong 8 bagian, diberikan 2 bagian. Pecahan sederhananya adalah...", options: ["A. 1/2", "B. 1/4", "C. 2/4", "D. 3/8"], answer: 1, explanation: "2/8 = 1/4." }
+        ];
+
+        const ptsQuestionsPkg2 = [
+            { topic: "Bab 1: Nilai Tempat", question: "Angka 4 pada <b>8.412</b> menempati nilai tempat...", options: ["A. Ribuan", "B. Ratusan", "C. Puluhan", "D. Satuan"], answer: 1, explanation: "Angka 4 menempati Ratusan (400)." },
+            { topic: "Bab 1: Membaca Bilangan", question: "Nama bilangan dari <b>9.605</b> adalah...", options: ["A. Sembilan ribu enam ratus lima puluh", "B. Sembilan ribu enam ratus lima", "C. Sembilan ribu enam puluh lima", "D. Sembilan ratus enam puluh lima"], answer: 1, explanation: "9.605 = Sembilan ribu enam ratus lima." },
+            { topic: "Bab 1: Komposisi Bilangan", question: "Hasil dari <b>8 Ribuan + 0 Ratusan + 7 Puluhan + 3 Satuan</b> adalah...", options: ["A. 8.730", "B. 8.073", "C. 8.703", "D. 8.733"], answer: 1, explanation: "8.000 + 0 + 70 + 3 = 8.073." },
+            { topic: "Bab 1: Mengurutkan Bilangan", question: "Urutan <b>3.100, 3.010, 3.001, 3.101</b> dari yang <b>terbesar</b> adalah...", options: ["A. 3.101, 3.100, 3.010, 3.001", "B. 3.001, 3.010, 3.100, 3.101", "C. 3.100, 3.101, 3.010, 3.001", "D. 3.101, 3.010, 3.100, 3.001"], answer: 0, explanation: "3.101 > 3.100 > 3.010 > 3.001." },
+            { topic: "Bab 1: Pengurangan Bilangan", question: "Hasil dari <b>5.000 - 1.850</b> adalah...", options: ["A. 3.250", "B. 3.150", "C. 3.050", "D. 4.150"], answer: 1, explanation: "5.000 - 1.850 = 3.150." },
+            { topic: "Bab 1: Faktor Bilangan", question: "Manakah yang <b>BUKAN</b> faktor dari <b>24</b>?", options: ["A. 4", "B. 5", "C. 6", "D. 8"], answer: 1, explanation: "5 tidak membagi habis 24." },
+            { topic: "Bab 1: Faktor Bilangan", question: "Semua faktor dari <b>28</b> adalah...", options: ["A. 1, 2, 4, 7, 14, 28", "B. 1, 2, 4, 6, 14, 28", "C. 1, 3, 7, 14, 28", "D. 2, 4, 7, 14"], answer: 0, explanation: "1×28, 2×14, 4×7 -> 1, 2, 4, 7, 14, 28." },
+            { topic: "Bab 1: Kelipatan Bilangan", question: "Tiga kelipatan pertama dari <b>8</b> adalah...", options: ["A. 8, 16, 24", "B. 1, 2, 4", "C. 8, 18, 28", "D. 16, 24, 32"], answer: 0, explanation: "8×1=8, 8×2=16, 8×3=24." },
+            { topic: "Bab 1: Kelipatan Bilangan", question: "Kelipatan <b>7</b> di antara <b>20 dan 40</b> adalah...", options: ["A. 21, 28, 35", "B. 21, 28, 35, 42", "C. 14, 21, 28, 35", "D. 28, 35"], answer: 0, explanation: "21, 28, 35." },
+            { topic: "Bab 1: Soal Cerita Kelipatan", question: "Menyiram tanaman setiap 5 hari. Dimulai tanggal 2, tanggal berikutnya adalah...", options: ["A. 7, 12, 17, 22, 27", "B. 5, 10, 15, 20", "C. 6, 11, 16, 21", "D. 10, 15, 20, 25"], answer: 0, explanation: "2+5=7, 7+5=12, 12+5=17, 17+5=22, 22+5=27." },
+            { topic: "Bab 2: Membandingkan Pembilang 1", question: "Tanda perbandingan untuk <b>1/4 ... 1/7</b> adalah...", options: ["A. <", "B. >", "C. =", "D. +"], answer: 1, explanation: "1/4 > 1/7." },
+            { topic: "Bab 2: Membandingkan Penyebut Sama", question: "Tanda perbandingan untuk <b>3/10 ... 7/10</b> adalah...", options: ["A. >", "B. <", "C. =", "D. ÷"], answer: 1, explanation: "3/10 < 7/10." },
+            { topic: "Bab 2: Menyederhanakan Pecahan", question: "Bentuk sederhana dari <b>8/12</b> adalah...", options: ["A. 4/6", "B. 2/3", "C. 1/3", "D. 3/4"], answer: 1, explanation: "(8÷4)/(12÷4) = 2/3." },
+            { topic: "Bab 2: Pecahan Senilai", question: "Manakah yang SENILAI dengan <b>3/7</b>?", options: ["A. 6/14", "B. 6/12", "C. 9/14", "D. 3/14"], answer: 0, explanation: "(3×2)/(7×2) = 6/14." },
+            { topic: "Bab 2: Pecahan Desimal", question: "Desimal dari <b>9/100</b> adalah...", options: ["A. 0,9", "B. 0,09", "C. 9,00", "D. 0,99"], answer: 1, explanation: "9/100 = 0,09." },
+            { topic: "Bab 2: Desimal ke Biasa", question: "Pecahan paling sederhana dari <b>0,8</b> adalah...", options: ["A. 8/10", "B. 4/5", "C. 2/5", "D. 8/100"], answer: 1, explanation: "0,8 = 8/10 = 4/5." },
+            { topic: "Bab 2: Konsep Persen", question: "Bentuk persen dari <b>7/10</b> adalah...", options: ["A. 7%", "B. 17%", "C. 70%", "D. 77%"], answer: 2, explanation: "7/10 = 70/100 = 70%." },
+            { topic: "Bab 2: Konsep Persen", question: "Bentuk persen dari <b>1/4</b> adalah...", options: ["A. 10%", "B. 20%", "C. 25%", "D. 40%"], answer: 2, explanation: "1/4 = 25/100 = 25%." },
+            { topic: "Bab 2: Persen ke Desimal", question: "Desimal dari <b>45%</b> adalah...", options: ["A. 4,5", "B. 0,45", "C. 0,045", "D. 45,0"], answer: 1, explanation: "45% = 0,45." },
+            { topic: "Bab 2: Cerita Persen", question: "3 bagian dari 10 bagian semangka diberikan. Berapa persen semangka yang diberikan?", options: ["A. 3%", "B. 30%", "C. 33%", "D. 300%"], answer: 1, explanation: "3/10 = 30%." }
+        ];
+
+        function generateSVGGraphic(svgData) {
+            if (!svgData) return '';
+            const { type, total, taken, shaded, color = '#10b981', numA, denA, numB, denB, markIndex, label } = svgData;
+
+            if (type === 'pizza' || type === 'pie') {
+                const totalSlices = total || 8;
+                const activeSlices = taken || shaded || 3;
+                let paths = '';
+                const radius = 60;
+                const cx = 80, cy = 80;
+
+                for (let i = 0; i < totalSlices; i++) {
+                    const startAngle = (i * 360 / totalSlices) * Math.PI / 180;
+                    const endAngle = ((i + 1) * 360 / totalSlices) * Math.PI / 180;
+                    const x1 = cx + radius * Math.cos(startAngle);
+                    const y1 = cy + radius * Math.sin(startAngle);
+                    const x2 = cx + radius * Math.cos(endAngle);
+                    const y2 = cy + radius * Math.sin(endAngle);
+                    const isTaken = i < activeSlices;
+                    const fillColor = isTaken ? color : '#f1f5f9';
+                    const largeArc = (360 / totalSlices) > 180 ? 1 : 0;
+
+                    paths += `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${fillColor}" stroke="#ffffff" stroke-width="2.5"/>`;
+                }
+
+                return `
+                    <svg viewBox="0 0 160 160" width="160" height="160">
+                        <circle cx="80" cy="80" r="64" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="2"/>
+                        ${paths}
+                    </svg>
+                `;
+            } else if (type === 'bar') {
+                const count = total || 5;
+                const active = shaded || 2;
+                const cellWidth = Math.min(45, 260 / count);
+                let rects = '';
+
+                for (let i = 0; i < count; i++) {
+                    const isActive = i < active;
+                    const fill = isActive ? color : '#f1f5f9';
+                    rects += `<rect x="${i * cellWidth + 5}" y="15" width="${cellWidth - 3}" height="40" rx="6" fill="${fill}" stroke="#94a3b8" stroke-width="1.5"/>`;
+                }
+
+                const totalWidth = count * cellWidth + 10;
+                return `
+                    <svg viewBox="0 0 ${totalWidth} 70" width="${totalWidth}" height="70">
+                        ${rects}
+                    </svg>
+                `;
+            } else if (type === 'compareBars') {
+                // Bar A
+                const wA = 220 / denA;
+                let rectsA = '';
+                for (let i = 0; i < denA; i++) {
+                    rectsA += `<rect x="${i * wA + 10}" y="10" width="${wA - 2}" height="28" rx="4" fill="${i < numA ? '#0284c7' : '#f1f5f9'}" stroke="#64748b" stroke-width="1"/>`;
+                }
+                // Bar B
+                const wB = 220 / denB;
+                let rectsB = '';
+                for (let i = 0; i < denB; i++) {
+                    rectsB += `<rect x="${i * wB + 10}" y="50" width="${wB - 2}" height="28" rx="4" fill="${i < numB ? '#10b981' : '#f1f5f9'}" stroke="#64748b" stroke-width="1"/>`;
+                }
+
+                return `
+                    <svg viewBox="0 0 240 90" width="240" height="90">
+                        <text x="10" y="8" font-size="9" font-weight="bold" fill="#0369a1">${numA}/${denA}</text>
+                        ${rectsA}
+                        <text x="10" y="48" font-size="9" font-weight="bold" fill="#047857">${numB}/${denB}</text>
+                        ${rectsB}
+                    </svg>
+                `;
+            } else if (type === 'comparePie') {
+                const makePie = (cx, cy, r, num, den, c) => {
+                    let p = '';
+                    for (let i = 0; i < den; i++) {
+                        const sA = (i * 360 / den) * Math.PI / 180;
+                        const eA = ((i + 1) * 360 / den) * Math.PI / 180;
+                        const x1 = cx + r * Math.cos(sA);
+                        const y1 = cy + r * Math.sin(sA);
+                        const x2 = cx + r * Math.cos(eA);
+                        const y2 = cy + r * Math.sin(eA);
+                        const fill = i < num ? c : '#f1f5f9';
+                        p += `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} Z" fill="${fill}" stroke="#ffffff" stroke-width="2"/>`;
+                    }
+                    return p;
+                };
+
+                return `
+                    <svg viewBox="0 0 220 110" width="220" height="110">
+                        ${makePie(55, 50, 40, numA, denA, '#0284c7')}
+                        <text x="55" y="102" font-size="11" font-weight="extrabold" text-anchor="middle" fill="#0369a1">${numA}/${denA}</text>
+                        
+                        <text x="110" y="55" font-size="16" font-weight="black" text-anchor="middle" fill="#64748b">VS</text>
+
+                        ${makePie(165, 50, 40, numB, denB, '#10b981')}
+                        <text x="165" y="102" font-size="11" font-weight="extrabold" text-anchor="middle" fill="#047857">${numB}/${denB}</text>
+                    </svg>
+                `;
+            } else if (type === 'grid10') {
+                const active = shaded || 4;
+                let rects = '';
+                for (let i = 0; i < 10; i++) {
+                    rects += `<rect x="${i * 22 + 10}" y="15" width="20" height="35" rx="3" fill="${i < active ? color : '#f1f5f9'}" stroke="#94a3b8" stroke-width="1.5"/>`;
+                }
+                return `
+                    <svg viewBox="0 0 240 65" width="240" height="65">
+                        ${rects}
+                    </svg>
+                `;
+            } else if (type === 'grid16') {
+                const active = shaded || 4;
+                let rects = '';
+                for (let row = 0; row < 4; row++) {
+                    for (let col = 0; col < 4; col++) {
+                        const idx = row * 4 + col;
+                        rects += `<rect x="${col * 24 + 10}" y="${row * 24 + 10}" width="22" height="22" rx="3" fill="${idx < active ? color : '#f1f5f9'}" stroke="#94a3b8" stroke-width="1.5"/>`;
+                    }
+                }
+                return `
+                    <svg viewBox="0 0 120 115" width="120" height="115">
+                        ${rects}
+                    </svg>
+                `;
+            } else if (type === 'grid100') {
+                const active = shaded || 25;
+                let rects = '';
+                for (let row = 0; row < 10; row++) {
+                    for (let col = 0; col < 10; col++) {
+                        const idx = row * 10 + col;
+                        rects += `<rect x="${col * 12 + 10}" y="${row * 12 + 10}" width="10.5" height="10.5" rx="1" fill="${idx < active ? color : '#f1f5f9'}" stroke="#cbd5e1" stroke-width="0.5"/>`;
+                    }
+                }
+                return `
+                    <svg viewBox="0 0 140 140" width="140" height="140">
+                        ${rects}
+                    </svg>
+                `;
+            } else if (type === 'chocolate') {
+                const count = total || 12;
+                const active = shaded || 4;
+                const cols = Math.min(6, count);
+                const rows = Math.ceil(count / cols);
+                let rects = '';
+
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        const idx = r * cols + c;
+                        if (idx < count) {
+                            rects += `<rect x="${c * 30 + 10}" y="${r * 25 + 10}" width="27" height="22" rx="4" fill="${idx < active ? color : '#e2e8f0'}" stroke="#475569" stroke-width="1.5"/>`;
+                        }
+                    }
+                }
+
+                return `
+                    <svg viewBox="0 0 ${cols * 30 + 20} ${rows * 25 + 20}" width="${cols * 30 + 20}" height="${rows * 25 + 20}">
+                        ${rects}
+                    </svg>
+                `;
+            } else if (type === 'numberline') {
+                const count = total || 4;
+                const mark = markIndex || 3;
+                const lbl = label || 'X';
+                const startX = 20, endX = 220;
+                const step = (endX - startX) / count;
+                let ticks = '';
+
+                for (let i = 0; i <= count; i++) {
+                    const x = startX + i * step;
+                    const isMarked = i === mark;
+                    ticks += `<line x1="${x}" y1="25" x2="${x}" y2="45" stroke="${isMarked ? '#ef4444' : '#475569'}" stroke-width="${isMarked ? '3' : '2'}"/>`;
+                    if (isMarked) {
+                        ticks += `<circle cx="${x}" cy="35" r="7" fill="#ef4444"/>`;
+                        ticks += `<text x="${x}" y="15" font-size="12" font-weight="black" text-anchor="middle" fill="#dc2626">${lbl}</text>`;
+                    }
+                    ticks += `<text x="${x}" y="58" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">${i}/${count}</text>`;
+                }
+
+                return `
+                    <svg viewBox="0 0 240 70" width="240" height="70">
+                        <line x1="${startX}" y1="35" x2="${endX}" y2="35" stroke="#334155" stroke-width="3"/>
+                        ${ticks}
+                    </svg>
+                `;
+            }
+            return '';
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'correct') {
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.3);
+                } else if (type === 'wrong') {
+                    osc.frequency.setValueAtTime(220, ctx.currentTime);
+                    osc.frequency.setValueAtTime(196, ctx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.3);
+                } else if (type === 'click') {
+                    osc.frequency.setValueAtTime(400, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.05);
+                }
+            } catch (e) {}
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('soundToggle');
+            btn.innerHTML = soundEnabled ? 
+                '<i class="fa-solid fa-volume-high text-lg"></i>' : 
+                '<i class="fa-solid fa-volume-xmark text-lg text-rose-300"></i>';
+        }
+
+        function switchTab(tabId) {
+            playSound('click');
+            currentTab = tabId;
+            ['home', 'bab1', 'bab2', 'pecahanSpecial', 'pts'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${t}`);
+                if (navBtn && t !== 'pecahanSpecial' && t !== 'pts') {
+                    navBtn.className = "px-3 py-2 rounded-lg transition hover:bg-indigo-500/50 text-indigo-100";
+                }
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav && tabId !== 'pecahanSpecial' && tabId !== 'pts') {
+                activeNav.className = "px-3 py-2 rounded-lg transition bg-indigo-700 text-white hover:bg-indigo-500";
+            }
+
+            document.getElementById('mobileMenu').classList.add('hidden');
+
+            if (tabId === 'bab1') {
+                calculateDecomposition();
+                generateFactors();
+            } else if (tabId === 'bab2') {
+                updateFractionVisual();
+            } else if (tabId === 'pecahanSpecial') {
+                renderPecahanQuestion();
+                renderPecahanNavGrid();
+            } else if (tabId === 'pts') {
+                renderPtsQuestion();
+                renderPtsNavGrid();
+            }
+        }
+
+        function toggleMobileNav() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
+        // --- BAB 1 LOGIC ---
+        function calculateDecomposition() {
+            const val = parseInt(document.getElementById('decomInput').value) || 7425;
+            const str = val.toString();
+            if (str.length !== 4) {
+                document.getElementById('decomResult').innerHTML = `<span class="text-rose-500">Masukkan bilangan 4 angka (1000 - 9999)</span>`;
+                return;
+            }
+            const r = parseInt(str[0]) * 1000;
+            const rt = parseInt(str[1]) * 100;
+            const p = parseInt(str[2]) * 10;
+            const s = parseInt(str[3]);
+
+            document.getElementById('decomResult').innerHTML = `
+                <div class="p-3 bg-white rounded-xl border border-blue-200 space-y-1 text-xs sm:text-sm">
+                    <div><span class="font-bold text-blue-700">${val}</span> = <span class="text-purple-600 font-bold">${r}</span> + <span class="text-blue-600 font-bold">${rt}</span> + <span class="text-emerald-600 font-bold">${p}</span> + <span class="text-amber-600 font-bold">${s}</span></div>
+                    <div class="text-xs text-slate-500">
+                        (${str[0]} Ribuan + ${str[1]} Ratusan + ${str[2]} Puluhan + ${str[3]} Satuan)
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateFactors() {
+            const num = parseInt(document.getElementById('factorInput').value) || 12;
+            let factors = [];
+            let pairs = [];
+
+            for (let i = 1; i <= num; i++) {
+                if (num % i === 0) {
+                    factors.push(i);
+                    if (i <= num / i) {
+                        pairs.push(`${i} × ${num / i}`);
+                    }
+                }
+            }
+
+            document.getElementById('factorResult').innerHTML = `
+                <div class="p-3 bg-white rounded-xl border border-indigo-200 space-y-2 text-xs sm:text-sm">
+                    <div><b>Pasangan Perkalian:</b> ${pairs.join(' , ')}</div>
+                    <div><b>Semua Faktor dari ${num}:</b> <span class="px-2 py-0.5 bg-indigo-100 text-indigo-800 font-bold rounded">${factors.join(', ')}</span></div>
+                </div>
+            `;
+        }
+
+        // --- BAB 2 LOGIC (FRACTION COMPARATOR) ---
+        function updateFractionVisual() {
+            const numA = Math.max(1, parseInt(document.getElementById('numA').value) || 1);
+            const denA = Math.max(1, parseInt(document.getElementById('denA').value) || 2);
+            const numB = Math.max(1, parseInt(document.getElementById('numB').value) || 1);
+            const denB = Math.max(1, parseInt(document.getElementById('denB').value) || 2);
+
+            const barA = document.getElementById('barA');
+            barA.innerHTML = '';
+            for (let i = 0; i < denA; i++) {
+                const cell = document.createElement('div');
+                cell.className = `h-full flex-1 border-r border-white/40 ${i < numA ? 'bg-emerald-500' : 'bg-slate-300'}`;
+                barA.appendChild(cell);
+            }
+
+            const barB = document.getElementById('barB');
+            barB.innerHTML = '';
+            for (let i = 0; i < denB; i++) {
+                const cell = document.createElement('div');
+                cell.className = `h-full flex-1 border-r border-white/40 ${i < numB ? 'bg-blue-500' : 'bg-slate-300'}`;
+                barB.appendChild(cell);
+            }
+
+            const valA = numA / denA;
+            const valB = numB / denB;
+            const cmpResult = document.getElementById('fractionCompareResult');
+
+            if (Math.abs(valA - valB) < 0.0001) {
+                cmpResult.innerHTML = `Pecahan <span class="text-emerald-600">${numA}/${denA}</span> SAMA BESAR dengan <span class="text-blue-600">${numB}/${denB}</span> (Pecahan Senilai! = ${(valA * 100).toFixed(0)}%)`;
+            } else if (valA > valB) {
+                cmpResult.innerHTML = `Pecahan <span class="text-emerald-600">${numA}/${denA}</span> LEBIH BESAR ( > ) daripada <span class="text-blue-600">${numB}/${denB}</span>`;
+            } else {
+                cmpResult.innerHTML = `Pecahan <span class="text-emerald-600">${numA}/${denA}</span> LEBIH KECIL ( < ) daripada <span class="text-blue-600">${numB}/${denB}</span>`;
+            }
+        }
+
+        function getActivePecahanQuestions() {
+            return currentPecahanPackage === 1 ? pecahanQuestionsPkg1 : pecahanQuestionsPkg2;
+        }
+
+        function getActivePecahanAnswersMap() {
+            return currentPecahanPackage === 1 ? userAnswersPecahanPkg1 : userAnswersPecahanPkg2;
+        }
+
+        function switchPecahanPackage(pkgNum) {
+            playSound('click');
+            currentPecahanPackage = pkgNum;
+            currentPecahanIndex = 0;
+
+            const btn1 = document.getElementById('btnPecahanPkg1');
+            const btn2 = document.getElementById('btnPecahanPkg2');
+
+            if (pkgNum === 1) {
+                btn1.className = "px-3 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-900 shadow";
+                btn2.className = "px-3 py-2 rounded-xl text-xs font-bold transition text-emerald-100 hover:text-white";
+            } else {
+                btn2.className = "px-3 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-900 shadow";
+                btn1.className = "px-3 py-2 rounded-xl text-xs font-bold transition text-emerald-100 hover:text-white";
+            }
+
+            document.getElementById('pecahanPackageTitleDisplay').innerText = `Paket Pecahan ${pkgNum}`;
+            renderPecahanQuestion();
+            renderPecahanNavGrid();
+        }
+
+        function setPecahanMode(mode) {
+            playSound('click');
+            pecahanMode = mode;
+            const btnStudy = document.getElementById('btnPecahanModeStudy');
+            const btnExam = document.getElementById('btnPecahanModeExam');
+
+            if (mode === 'study') {
+                btnStudy.className = "px-3 py-2 rounded-xl text-xs font-bold transition bg-amber-400 text-slate-950 shadow";
+                btnExam.className = "px-3 py-2 rounded-xl text-xs font-bold transition text-emerald-100 hover:text-white";
+            } else {
+                btnExam.className = "px-3 py-2 rounded-xl text-xs font-bold transition bg-amber-400 text-slate-950 shadow";
+                btnStudy.className = "px-3 py-2 rounded-xl text-xs font-bold transition text-emerald-100 hover:text-white";
+            }
+            renderPecahanQuestion();
+        }
+
+        function renderPecahanNavGrid() {
+            const grid = document.getElementById('pecahanNavGrid');
+            grid.innerHTML = '';
+            const questions = getActivePecahanQuestions();
+            const answersMap = getActivePecahanAnswersMap();
+
+            questions.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                const isAnswered = answersMap[idx] !== undefined;
+                const isCurrent = idx === currentPecahanIndex;
+
+                let stateClasses = "bg-slate-100 text-slate-700 hover:bg-slate-200";
+                if (isCurrent) {
+                    stateClasses = "bg-emerald-600 text-white font-black ring-2 ring-emerald-400";
+                } else if (isAnswered) {
+                    stateClasses = "bg-emerald-100 text-emerald-800 font-bold border border-emerald-300";
+                }
+
+                btn.className = `p-2 rounded-lg text-xs font-bold transition flex items-center justify-center ${stateClasses}`;
+                btn.innerText = idx + 1;
+                btn.onclick = () => {
+                    playSound('click');
+                    currentPecahanIndex = idx;
+                    renderPecahanQuestion();
+                    renderPecahanNavGrid();
+                };
+                grid.appendChild(btn);
+            });
+
+            const answeredCount = Object.keys(answersMap).length;
+            document.getElementById('pecahanProgressText').innerText = `${answeredCount} / ${questions.length}`;
+        }
+
+        function renderPecahanQuestion() {
+            const questions = getActivePecahanQuestions();
+            const answersMap = getActivePecahanAnswersMap();
+            const q = questions[currentPecahanIndex];
+
+            document.getElementById('pecahanHeader').innerText = `Paket Pecahan ${currentPecahanPackage} - Soal Nomor ${currentPecahanIndex + 1}`;
+            document.getElementById('pecahanTag').innerText = q.topic;
+            document.getElementById('pecahanQuestionText').innerHTML = q.question;
+
+            // Render dynamic SVG graphic
+            const svgBox = document.getElementById('pecahanSvgContainer');
+            svgBox.innerHTML = generateSVGGraphic(q.svg);
+
+            const optsContainer = document.getElementById('pecahanOptionsContainer');
+            optsContainer.innerHTML = '';
+
+            const selectedOpt = answersMap[currentPecahanIndex];
+
+            q.options.forEach((optText, optIdx) => {
+                const btn = document.createElement('button');
+                let style = "bg-slate-50 border-slate-200 text-slate-800 hover:bg-slate-100";
+
+                if (selectedOpt === optIdx) {
+                    if (pecahanMode === 'study') {
+                        if (optIdx === q.answer) {
+                            style = "bg-emerald-100 border-emerald-500 text-emerald-950 font-bold";
+                        } else {
+                            style = "bg-rose-100 border-rose-400 text-rose-950 font-bold";
+                        }
+                    } else {
+                        style = "bg-emerald-100 border-emerald-500 text-emerald-900 font-bold";
+                    }
+                } else if (pecahanMode === 'study' && selectedOpt !== undefined && optIdx === q.answer) {
+                    style = "bg-emerald-50 border-emerald-300 text-emerald-900 font-semibold";
+                }
+
+                btn.className = `w-full p-3.5 rounded-xl border-2 text-left transition text-sm flex items-center justify-between ${style}`;
+                btn.innerHTML = `<span>${optText}</span>`;
+                btn.onclick = () => selectPecahanAnswer(optIdx);
+                optsContainer.appendChild(btn);
+            });
+
+            const expBox = document.getElementById('pecahanExplanationBox');
+            if (pecahanMode === 'study' && selectedOpt !== undefined) {
+                expBox.classList.remove('hidden');
+                document.getElementById('pecahanExplanationText').innerHTML = q.explanation;
+            } else {
+                expBox.classList.add('hidden');
+            }
+
+            document.getElementById('btnPecahanPrev').disabled = currentPecahanIndex === 0;
+            document.getElementById('btnPecahanNext').innerText = (currentPecahanIndex === questions.length - 1) ? 'Selesaikan Kuis' : 'Selanjutnya';
+        }
+
+        function selectPecahanAnswer(optIdx) {
+            const questions = getActivePecahanQuestions();
+            const answersMap = getActivePecahanAnswersMap();
+            
+            answersMap[currentPecahanIndex] = optIdx;
+            const q = questions[currentPecahanIndex];
+
+            if (optIdx === q.answer) {
+                playSound('correct');
+            } else {
+                playSound('wrong');
+            }
+
+            renderPecahanQuestion();
+            renderPecahanNavGrid();
+        }
+
+        function navigatePecahanQuestion(dir) {
+            const questions = getActivePecahanQuestions();
+            playSound('click');
+            if (dir === 1 && currentPecahanIndex === questions.length - 1) {
+                submitPecahanExam();
+                return;
+            }
+            currentPecahanIndex = Math.max(0, Math.min(questions.length - 1, currentPecahanIndex + dir));
+            renderPecahanQuestion();
+            renderPecahanNavGrid();
+        }
+
+        function submitPecahanExam() {
+            const questions = getActivePecahanQuestions();
+            const answersMap = getActivePecahanAnswersMap();
+
+            let correctCount = 0;
+            questions.forEach((q, idx) => {
+                if (answersMap[idx] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const score = Math.round((correctCount / questions.length) * 100);
+            document.getElementById('modalTitle').innerText = "Hasil Kuis Pecahan";
+            document.getElementById('finalScore').innerText = score;
+            document.getElementById('scoreSubtext').innerText = `${correctCount} dari ${questions.length} Soal Terjawab Benar`;
+            document.getElementById('modalPackageSubtext').innerText = `Paket Pecahan ${currentPecahanPackage} - Visual Quiz`;
+
+            const feedback = document.getElementById('feedbackMsg');
+            if (score >= 80) {
+                feedback.innerHTML = "🎉 <b class='text-emerald-600'>Hebat Sekali!</b> Siswa sudah sangat mahir membaca visual pecahan, desimal, dan persen!";
+            } else if (score >= 60) {
+                feedback.innerHTML = "👍 <b>Bagus!</b> Pemahaman pecahan sudah lumayan, tinggal memperdalam konversi ke desimal/persen.";
+            } else {
+                feedback.innerHTML = "💪 <b>Terus Berlatih!</b> Manfaatkan Mode Belajar untuk menyimak gambar dan langkah pembahasannya.";
+            }
+
+            document.getElementById('resultModal').classList.remove('hidden');
+        }
+
+        // --- PTS SIMULATION ENGINE ---
+        function getActiveQuestions() {
+            return currentPackage === 1 ? ptsQuestionsPkg1 : ptsQuestionsPkg2;
+        }
+
+        function getActiveAnswersMap() {
+            return currentPackage === 1 ? userAnswersPkg1 : userAnswersPkg2;
+        }
+
+        function switchPtsPackage(pkgNum) {
+            playSound('click');
+            currentPackage = pkgNum;
+            currentPtsIndex = 0;
+
+            const btn1 = document.getElementById('btnPkg1');
+            const btn2 = document.getElementById('btnPkg2');
+
+            if (pkgNum === 1) {
+                btn1.className = "px-3 py-2 rounded-lg text-xs font-bold transition bg-indigo-600 text-white shadow";
+                btn2.className = "px-3 py-2 rounded-lg text-xs font-bold transition text-indigo-700 hover:text-indigo-900";
+            } else {
+                btn2.className = "px-3 py-2 rounded-lg text-xs font-bold transition bg-indigo-600 text-white shadow";
+                btn1.className = "px-3 py-2 rounded-lg text-xs font-bold transition text-indigo-700 hover:text-indigo-900";
+            }
+
+            document.getElementById('packageTitleDisplay').innerText = `Paket Quiz ${pkgNum}`;
+            renderPtsQuestion();
+            renderPtsNavGrid();
+        }
+
+        function setPtsMode(mode) {
+            playSound('click');
+            ptsMode = mode;
+            const btnStudy = document.getElementById('btnModeStudy');
+            const btnExam = document.getElementById('btnModeExam');
+
+            if (mode === 'study') {
+                btnStudy.className = "px-3 py-2 rounded-lg text-xs font-bold transition bg-white text-indigo-600 shadow";
+                btnExam.className = "px-3 py-2 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900";
+            } else {
+                btnExam.className = "px-3 py-2 rounded-lg text-xs font-bold transition bg-white text-indigo-600 shadow";
+                btnStudy.className = "px-3 py-2 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900";
+            }
+            renderPtsQuestion();
+        }
+
+        function renderPtsNavGrid() {
+            const grid = document.getElementById('ptsQuestionNavGrid');
+            grid.innerHTML = '';
+            const questions = getActiveQuestions();
+            const answersMap = getActiveAnswersMap();
+
+            questions.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                const isAnswered = answersMap[idx] !== undefined;
+                const isCurrent = idx === currentPtsIndex;
+
+                let stateClasses = "bg-slate-100 text-slate-700 hover:bg-slate-200";
+                if (isCurrent) {
+                    stateClasses = "bg-indigo-600 text-white font-black ring-2 ring-indigo-400";
+                } else if (isAnswered) {
+                    stateClasses = "bg-emerald-100 text-emerald-800 font-bold border border-emerald-300";
+                }
+
+                btn.className = `p-2 rounded-lg text-xs font-bold transition flex items-center justify-center ${stateClasses}`;
+                btn.innerText = idx + 1;
+                btn.onclick = () => {
+                    playSound('click');
+                    currentPtsIndex = idx;
+                    renderPtsQuestion();
+                    renderPtsNavGrid();
+                };
+                grid.appendChild(btn);
+            });
+
+            const answeredCount = Object.keys(answersMap).length;
+            document.getElementById('ptsProgressText').innerText = `${answeredCount} / ${questions.length}`;
+        }
+
+        function renderPtsQuestion() {
+            const questions = getActiveQuestions();
+            const answersMap = getActiveAnswersMap();
+            const q = questions[currentPtsIndex];
+
+            document.getElementById('ptsQuestionHeader').innerText = `Paket ${currentPackage} - Soal Nomor ${currentPtsIndex + 1}`;
+            document.getElementById('ptsQuestionTag').innerText = q.topic;
+            document.getElementById('ptsQuestionText').innerHTML = q.question;
+
+            const optsContainer = document.getElementById('ptsOptionsContainer');
+            optsContainer.innerHTML = '';
+
+            const selectedOpt = answersMap[currentPtsIndex];
+
+            q.options.forEach((optText, optIdx) => {
+                const btn = document.createElement('button');
+                let style = "bg-slate-50 border-slate-200 text-slate-800 hover:bg-slate-100";
+
+                if (selectedOpt === optIdx) {
+                    if (ptsMode === 'study') {
+                        if (optIdx === q.answer) {
+                            style = "bg-emerald-100 border-emerald-400 text-emerald-900 font-bold";
+                        } else {
+                            style = "bg-rose-100 border-rose-400 text-rose-900 font-bold";
+                        }
+                    } else {
+                        style = "bg-indigo-100 border-indigo-500 text-indigo-900 font-bold";
+                    }
+                } else if (ptsMode === 'study' && selectedOpt !== undefined && optIdx === q.answer) {
+                    style = "bg-emerald-50 border-emerald-300 text-emerald-800 font-semibold";
+                }
+
+                btn.className = `w-full p-3.5 rounded-xl border-2 text-left transition text-sm flex items-center justify-between ${style}`;
+                btn.innerHTML = `<span>${optText}</span>`;
+                btn.onclick = () => selectPtsAnswer(optIdx);
+                optsContainer.appendChild(btn);
+            });
+
+            const expBox = document.getElementById('ptsExplanationBox');
+            if (ptsMode === 'study' && selectedOpt !== undefined) {
+                expBox.classList.remove('hidden');
+                document.getElementById('ptsExplanationText').innerHTML = q.explanation;
+            } else {
+                expBox.classList.add('hidden');
+            }
+
+            document.getElementById('btnPtsPrev').disabled = currentPtsIndex === 0;
+            document.getElementById('btnPtsNext').innerText = (currentPtsIndex === questions.length - 1) ? 'Selesai Exam' : 'Selanjutnya';
+        }
+
+        function selectPtsAnswer(optIdx) {
+            const questions = getActiveQuestions();
+            const answersMap = getActiveAnswersMap();
+            
+            answersMap[currentPtsIndex] = optIdx;
+            const q = questions[currentPtsIndex];
+
+            if (optIdx === q.answer) {
+                playSound('correct');
+            } else {
+                playSound('wrong');
+            }
+
+            renderPtsQuestion();
+            renderPtsNavGrid();
+        }
+
+        function navigatePtsQuestion(dir) {
+            const questions = getActiveQuestions();
+            playSound('click');
+            if (dir === 1 && currentPtsIndex === questions.length - 1) {
+                submitPTSExam();
+                return;
+            }
+            currentPtsIndex = Math.max(0, Math.min(questions.length - 1, currentPtsIndex + dir));
+            renderPtsQuestion();
+            renderPtsNavGrid();
+        }
+
+        function submitPTSExam() {
+            const questions = getActiveQuestions();
+            const answersMap = getActiveAnswersMap();
+
+            let correctCount = 0;
+            questions.forEach((q, idx) => {
+                if (answersMap[idx] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const score = Math.round((correctCount / questions.length) * 100);
+            document.getElementById('modalTitle').innerText = "Hasil Simulasi PTS";
+            document.getElementById('finalScore').innerText = score;
+            document.getElementById('scoreSubtext').innerText = `${correctCount} dari ${questions.length} Soal Terjawab Benar`;
+            document.getElementById('modalPackageSubtext').innerText = `Paket Quiz ${currentPackage} - Les Privat Matematika`;
+
+            const feedback = document.getElementById('feedbackMsg');
+            if (score >= 80) {
+                feedback.innerHTML = "🎉 <b class='text-emerald-600'>Sangat Luar Biasa!</b> Siswa sudah sangat menguasai Paket Quiz ini dan siap PTS!";
+            } else if (score >= 60) {
+                feedback.innerHTML = "👍 <b>Bagus!</b> Perlu ulas beberapa soal yang keliru terutama pada materi pecahan / pemfaktoran.";
+            } else {
+                feedback.innerHTML = "💪 <b>Semangat Belajar!</b> Gunakan Mode Belajar untuk melihat pembahasan tiap soal.";
+            }
+
+            document.getElementById('resultModal').classList.remove('hidden');
+        }
+
+        function closeResultModal() {
+            playSound('click');
+            document.getElementById('resultModal').classList.add('hidden');
+        }
+
+        function repeatCurrentPackage() {
+            playSound('click');
+            if (currentTab === 'pecahanSpecial') {
+                resetPecahanExam();
+            } else {
+                resetPtsExam();
+            }
+        }
+
+        function resetPtsExam() {
+            if (currentPackage === 1) {
+                userAnswersPkg1 = {};
+            } else {
+                userAnswersPkg2 = {};
+            }
+            currentPtsIndex = 0;
+            closeResultModal();
+            renderPtsQuestion();
+            renderPtsNavGrid();
+        }
+
+        function resetPecahanExam() {
+            if (currentPecahanPackage === 1) {
+                userAnswersPecahanPkg1 = {};
+            } else {
+                userAnswersPecahanPkg2 = {};
+            }
+            currentPecahanIndex = 0;
+            closeResultModal();
+            renderPecahanQuestion();
+            renderPecahanNavGrid();
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            switchTab('home');
+        };
+    </script>
+</body>
+</html>
